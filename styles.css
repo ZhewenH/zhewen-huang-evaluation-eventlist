@@ -1,0 +1,92 @@
+body {
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  text-align: center;
+}
+
+form {
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  width: 5rem;
+  height: 5rem;
+  color: white;
+  height: 1rem;
+  border-radius: 0.3rem;
+  font-size: 0.5rem;
+  background-color: #0099ff;
+}
+
+input {
+  width: 100%;
+  margin-left: 3%;
+  margin-top: 3%;
+  height: 2rem;
+  border-radius: 0.5rem;
+  border-color: whitesmoke;
+}
+  
+  /* .agree {
+    align-items: center;
+    font-size: 10%;
+  }
+  
+  .agree label {
+    width: 20%;
+    margin-right: 15%;
+  }
+  
+  .agree b {
+    margin-left: 10%;
+  }
+  
+  .regsign button {
+    width: 46%;
+    height: 2rem;
+    margin-left: 3%;
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 90%;
+  }
+  
+  .regsign__reg {
+    background-color: #0099ff;
+    border: #0099ff;
+  }
+  
+  .regsign__sign {
+    background-color: #00cc00;
+    border: #00cc00;
+  }
+  
+  .name input,
+  .password input {
+    width: 46%;
+    margin-left: 3%;
+    margin-top: 3%;
+    height: 2rem;
+    border-radius: 0.5rem;
+    border-color: whitesmoke;
+  }
+  
+  .mobile input,
+  .email input {
+    width: 96%;
+    margin-left: 3%;
+    margin-top: 3%;
+    height: 2rem;
+    border-radius: 0.5rem;
+    border-color: whitesmoke;
+  } */
+  
