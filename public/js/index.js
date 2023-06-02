@@ -1,3 +1,6 @@
+// Author: Zhewen Huang
+// Copyright (c) 2023 Zhewen Huang
+
 const API = {
     baseURL: 'http://localhost:3000/events',
     async get() {
@@ -139,16 +142,18 @@ class EventController {
     async handleUpdate(button, id) {
         const row = button.parentNode.parentNode;
         const eventName = row.cells[0].textContent;
-        const startDate = row.cells[1].textContent;
-        const endDate = row.cells[2].textContent;
+        const startDate = row.cells[1].querySelector('input[type="date"]').value;
+        const endDate = row.cells[2].querySelector('input[type="date"]').value;
+
         await this.model.updateEvent(id, { eventName, startDate, endDate });
     }
     async handleSave(button, id) {
         const row = button.parentNode.parentNode.parentNode;
         const eventName = row.cells[0].textContent;
-        const startDate = row.cells[1].textContent;
-        const endDate = row.cells[2].textContent;
-        console.log(button)
+        const startDate = row.cells[1].querySelector('input[type="date"]').value;
+        const endDate = row.cells[2].querySelector('input[type="date"]').value;
+
+        //console.log(button)
         if (!id) {
             const event = await this.model.createEvent({ eventName, startDate, endDate });
             button.id = event.id;
