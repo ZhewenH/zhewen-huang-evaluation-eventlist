@@ -1,5 +1,5 @@
 // Author: Zhewen Huang
-// Copyright (c) 2023 Zhewen Huang
+// Copyright (c) 2023
 
 const API = {
     baseURL: 'http://localhost:3000/events',
@@ -77,26 +77,26 @@ class EventView {
 
             actionCell.innerHTML = `
                 <div class="action-buttons">
-                 <span onclick="eventController.handleSave(this)">
+                 <button onclick="eventController.handleSave(this)" class="savebtn">
                     <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M21,20V8.414a1,1,0,0,0-.293-.707L16.293,3.293A1,1,0,0,0,15.586,3H4A1,1,0,0,0,3,4V20a1,1,0,0,0,1,1H20A1,1,0,0,0,21,20ZM9,8h4a1,1,0,0,1,0,2H9A1,1,0,0,1,9,8Zm7,11H8V15a1,1,0,0,1,1-1h6a1,1,0,0,1,1,1Z"/>
                     </svg>
-                </span>
+                </button>
                 </div>
             `;
         } else {
             actionCell.innerHTML = `
                     <div class="action-buttons">
-                     <span onclick="eventController.handleBeginUpdate(this, ${event.id})">
+                     <button onclick="eventController.handleBeginUpdate(this, ${event.id})" class="editbtn">
                       <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="EditIcon" aria-label="fontSize small">
                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
                       </svg>
-                    </span>
-                     <span onclick="eventController.handleDelete(this, ${event.id})">
+                    </button>
+                     <button onclick="eventController.handleDelete(this, ${event.id})" class="deletebtn">
                      <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DeleteIcon" aria-label="fontSize small">
                           <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                         </svg>
-                     </span>
+                     </button>
                  </div>
                 `;
         }
@@ -109,11 +109,11 @@ class EventView {
         // button.outerHTML = `<button onclick="eventController.handleSave(this, ${id})">Save</button>`;
         button.outerHTML = 
         `
-        <span onclick="eventController.handleSave(this, ${id})">
+        <button onclick="eventController.handleSave(this, ${id})" class="savebtn">
             <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
              <path d="M21,20V8.414a1,1,0,0,0-.293-.707L16.293,3.293A1,1,0,0,0,15.586,3H4A1,1,0,0,0,3,4V20a1,1,0,0,0,1,1H20A1,1,0,0,0,21,20ZM9,8h4a1,1,0,0,1,0,2H9A1,1,0,0,1,9,8Zm7,11H8V15a1,1,0,0,1,1-1h6a1,1,0,0,1,1,1Z"/>
         </svg>
-         </span>`;
+         </button>`;
 
     }
 }
@@ -158,24 +158,24 @@ class EventController {
             const event = await this.model.createEvent({ eventName, startDate, endDate });
             button.id = event.id;
             button.outerHTML = `
-            <span onclick="eventController.handleBeginUpdate(this, ${button.id})">
+            <button onclick="eventController.handleBeginUpdate(this, ${button.id})" class="editbtn">
               <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="EditIcon" aria-label="fontSize small">
                 <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
               </svg>
-            </span>
-            <span onclick="eventController.handleDelete(this, ${button.id})">
+            </button>
+            <button onclick="eventController.handleDelete(this, ${button.id})" class="deletebtn">
               <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DeleteIcon" aria-label="fontSize small">
                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
               </svg>
-            </span>`;
+            </button>`;
         } else {
             await this.model.updateEvent(id, { eventName, startDate, endDate });
             button.outerHTML = `
-            <span onclick="eventController.handleBeginUpdate(this, ${id})">
+            <button onclick="eventController.handleBeginUpdate(this, ${id})" class="editbtn">
                 <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="EditIcon" aria-label="fontSize small">
                     <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
                 </svg>
-            </span>`;
+            </button>`;
         }
         row.cells[0].contentEditable = 'false';
         row.cells[1].contentEditable = 'false';

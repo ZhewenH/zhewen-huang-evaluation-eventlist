@@ -1,9 +1,25 @@
+/* Author: Zhewen Huang
+   Copyright (c) 2023 
+*/
+
 body {
     font-family: Arial, sans-serif;
 }
 
+h1 {
+    text-align: center;
+}
+
 #event-form {
-    margin-bottom: 1em;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+#event-form button {
+    color: white;
+    background-color: #008cba;
+    border-radius: 0.5rem;
 }
 
 table {
@@ -12,8 +28,12 @@ table {
 }
 
 th, td {
-    padding: 0.5em;
-    border: 1px solid #ddd;
+    padding: 0.5rem;
+    border: 1px solid #e6e2d3;
+}
+
+td {
+    background-color: #e6e2d3;
 }
 
 .action-buttons {
@@ -24,5 +44,16 @@ th, td {
 svg {
     width: 2rem;
     height: 2rem;
+    fill: white;
   }
 
+button.editbtn,
+button.savebtn {
+    background-color:#008cba;
+    border-radius: 0.25rem;
+}
+
+button.deletebtn {
+    background-color:#c94c4c;
+    border-radius: 0.25rem;
+}
