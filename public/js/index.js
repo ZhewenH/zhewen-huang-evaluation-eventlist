@@ -1,34 +1,41 @@
 // Author: Zhewen Huang
 // Copyright (c) 2023
 
-const API = {
-    baseURL: 'http://localhost:3000/events',
-    async get() {
-        const response = await fetch(this.baseURL);
+const API = (function () {
+    const baseURL = 'http://localhost:3000/events';
+    const get = async () => {
+        const response = await fetch(baseURL);
         return await response.json();
-    },
-    async post(event) {
-        const response = await fetch(this.baseURL, {
+    };
+    const post = async (event) => {
+        const response = await fetch(baseURL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(event)
         });
         return await response.json();
-    },
-    async put(id, event) {
-        await fetch(`${this.baseURL}/${id}`, {
+    };
+    const put = async (id, event) => {
+        await fetch(`${baseURL}/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(event)
         });
-    },
-    async delete(id) {
-        await fetch(`${this.baseURL}/${id}`, {
+    };
+    const deleteid = async (id) => {
+        await fetch(`${baseURL}/${id}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' }
         });
-    }
-};
+    };
+
+    return {
+        get,
+        post,
+        put,
+        deleteid,
+      };
+})();
 
 class EventModel {
     constructor() {
@@ -43,7 +50,7 @@ class EventModel {
         return await API.put(id, event);
     }
     async deleteEvent(id) {
-        return await API.delete(id);
+        return await API.deleteid(id);
     }
 }
 class EventView {
@@ -51,6 +58,8 @@ class EventView {
         this.form = document.getElementById('event-form');
         this.eventsTable = document.getElementById('events-table');
     }
+
+    // add rows to table
     addEditableRowToTable(event = {}, isNew = true) {
         const newRow = this.eventsTable.insertRow();
         const titleCell = newRow.insertCell(0);
@@ -58,19 +67,22 @@ class EventView {
         const endCell = newRow.insertCell(2);
         const actionCell = newRow.insertCell(3);
 
+        // eventname
         titleCell.textContent = event.eventName || '';
 
+        // start date
         const startDateInput = document.createElement('input');
         startDateInput.type = 'date';
         startDateInput.value = event.startDate || '';
         startCell.appendChild(startDateInput);
 
+        //end date
         const endDateInput = document.createElement('input');
         endDateInput.type = 'date';
         endDateInput.value = event.endDate || '';
         endCell.appendChild(endDateInput);
 
-        if (isNew) {
+        if (isNew) { // add row
             titleCell.contentEditable = 'true';
             startCell.contentEditable = 'true';
             endCell.contentEditable = 'true';
@@ -84,7 +96,7 @@ class EventView {
                 </button>
                 </div>
             `;
-        } else {
+        } else { // existed row
             actionCell.innerHTML = `
                     <div class="action-buttons">
                      <button onclick="eventController.handleBeginUpdate(this, ${event.id})" class="editbtn">
@@ -101,12 +113,12 @@ class EventView {
                 `;
         }
     }
+
     makeRowEditable(button, id) {
         const row = button.parentNode.parentNode.parentNode;
         row.cells[0].contentEditable = 'true';
         row.cells[1].contentEditable = 'true';
         row.cells[2].contentEditable = 'true';
-        // button.outerHTML = `<button onclick="eventController.handleSave(this, ${id})">Save</button>`;
         button.outerHTML = 
         `
         <button onclick="eventController.handleSave(this, ${id})" class="savebtn">
@@ -125,12 +137,14 @@ class EventController {
         this.form.addEventListener('submit', this.handleAdd.bind(this));
         this.init();
     }
+
     async init() {
         const events = await this.model.getEvents();
         events.forEach(event => {
             this.view.addEditableRowToTable(event, false);
         });
     }
+
     handleAdd(e) {
         e.preventDefault();
         this.view.addEditableRowToTable();
@@ -139,6 +153,7 @@ class EventController {
     handleBeginUpdate(button, id){
         this.view.makeRowEditable(button, id);
     }
+
     async handleUpdate(button, id) {
         const row = button.parentNode.parentNode;
         const eventName = row.cells[0].textContent;
@@ -147,14 +162,14 @@ class EventController {
 
         await this.model.updateEvent(id, { eventName, startDate, endDate });
     }
+
     async handleSave(button, id) {
         const row = button.parentNode.parentNode.parentNode;
         const eventName = row.cells[0].textContent;
         const startDate = row.cells[1].querySelector('input[type="date"]').value;
         const endDate = row.cells[2].querySelector('input[type="date"]').value;
 
-        //console.log(button)
-        if (!id) {
+        if (!id) { // save when adding
             const event = await this.model.createEvent({ eventName, startDate, endDate });
             button.id = event.id;
             button.outerHTML = `
@@ -168,7 +183,7 @@ class EventController {
                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
               </svg>
             </button>`;
-        } else {
+        } else { // save when updating
             await this.model.updateEvent(id, { eventName, startDate, endDate });
             button.outerHTML = `
             <button onclick="eventController.handleBeginUpdate(this, ${id})" class="editbtn">
@@ -181,6 +196,7 @@ class EventController {
         row.cells[1].contentEditable = 'false';
         row.cells[2].contentEditable = 'false';
     }
+
     async handleDelete(button, id) {
         const row = button.parentNode.parentNode.parentNode;
         await this.model.deleteEvent(id);
